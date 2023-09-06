@@ -1,22 +1,3 @@
-/*
-
-Binary Search Tree!
-
-Name your class Tree. 
-
-I'd suggest making another class called Node. You don't have to; you can make them all plain JS objects
-
-Here you'll make a BST. Your Tree class will have keep track of a root which will be the first item added
-to your tree. From there, if the item is less than the value of that node, it will go into its left subtree
-and if greater it will go to the right subtree.
-
-value - integer     - value being contained in the node
-left  - Node/object - the left node which itself may be another tree
-right - Node/object - the right node which itself may be another tree
-delete - 
-
-*/
-
 class Tree {
   constructor() {
     this.root = null;
@@ -54,26 +35,33 @@ class Tree {
   }
 
   delete(value) {
-    console.log(value, "value");
+    // console.log(value, "value");
     let pointer = this._findNode(value);
+    //if there is no value return undefined
     if (!pointer) return;
-    console.log(pointer, "pointer");
+
+    // console.log(pointer, "pointer");
+    //if there is no right side, put left side instead deleted
     if (!pointer?.right) {
-      pointer = pointer.left;
+      let { value, left, right } = pointer.left;
+      pointer.value = value;
+      pointer.right = left;
+      pointer.left = right;
       return;
     }
     const changer = this._findLeastRightChild(pointer);
     //on pointer - change value to changer value, add left and right from pointer
+    // console.log(changer, "changer");
+    pointer.value = changer.value;
     //on changer - change node to node from changer.right
-    console.log(changer, "changer");
-    console.log(this.root);
+    changer.value = changer.right.value;
+    changer.right = changer.right.right;
   }
 
   _findLeastRightChild(pointer) {
     if (pointer.right?.value) pointer = pointer.right;
     while (pointer.left?.value) {
       pointer = pointer.left;
-      // console.log(pointer);
     }
     return pointer;
   }
